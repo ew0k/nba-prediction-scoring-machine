@@ -1,10 +1,11 @@
 import json
 import os
 
+standings_file_name = "nba-standings.json"
 sportradar_key = os.environ.get('SPORTRADAR_KEY')
-os.system("curl -X GET \"https://api.sportradar.us/nba/trial/v7/en/seasons/2018/REG/standings.json?api_key={" + sportradar_key + "}\" > nba-standings.json")
+os.system("curl -X GET \"https://api.sportradar.us/nba/trial/v7/en/seasons/2018/REG/standings.json?api_key={" + sportradar_key + "}\" > " + standings_file_name)
 
-standings_file = open("nba-standings.json", "r")
+standings_file = open(standings_file_name, "r")
 
 json_string = json.load(standings_file)
 
