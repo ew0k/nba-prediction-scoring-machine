@@ -5,7 +5,11 @@ import http.client
 def get_standings():
     conn = http.client.HTTPSConnection("api.sportradar.us")
 
-    conn.request("GET", "/nba/trial/v7/en/seasons/2018/REG/standings.json?api_key=" + os.environ.get('SPORTRADAR_KEY'))
+    try:
+        conn.request("GET", "/nba/trial/v7/en/seasons/2018/REG/standings.json?api_key=" + os.environ.get('SPORTRADAR_KEY'))
+    except:
+        print("SPORTRADAR_KEY environment variable not set")
+        exit(1)
 
     res = conn.getresponse()
     data = res.read()
@@ -26,10 +30,8 @@ def parse_json(json_string):
                     east_conference_standings[team_conference_standing] = team_name
     return west_conference_standings, east_conference_standings
 
-def main():
-    nba_data = get_standings()
-    west_conference_standings, east_conference_standings = parse_json(json.loads(nba_data))
 
+def print_standings(west_conference_standings, east_conference_standings):
     print("West Standings")
     for standing in range(1, 15+1):
         team_name = west_conference_standings[standing]
@@ -40,5 +42,10 @@ def main():
     for standing in range(1, 15+1):
         team_name = east_conference_standings[standing]
         print(team_name + ": " + str(standing))
+
+def main():
+    nba_data = get_standings()
+    west_conference_standings, east_conference_standings = parse_json(json.loads(nba_data))
+    print_standings(west_conference_standings, east_conference_standings)
 
 main()
