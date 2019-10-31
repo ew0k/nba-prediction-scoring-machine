@@ -27,6 +27,7 @@ def get_standings(sportradar_key):
 
     return data
 
+
 def parse_json(json_string):
     west_conference_standings = {}
     east_conference_standings = {}
@@ -52,6 +53,7 @@ def print_standings(west_conference_standings, east_conference_standings):
     print("East Standings")
     for key, value in sorted(east_conference_standings.items(), key=lambda item: item[1]):
         print("%s: %s" % (key, value))
+
 
 def main():
     sportradar_key = get_sportradar_key()
