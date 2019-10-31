@@ -8,7 +8,7 @@ def get_standings():
     try:
         sportradar_key_file = open("sportradar_key.dontpush")
     except:
-        print("no sportradar_key.dontpush file")
+        print("Cannot find sportradar_key.dontpush file")
         exit(1)
     
     sportradar_key = sportradar_key_file.readline()
