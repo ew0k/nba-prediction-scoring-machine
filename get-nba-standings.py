@@ -11,7 +11,7 @@ def get_standings():
         print("Cannot find sportradar_key.dontpush file")
         exit(1)
     
-    sportradar_key = sportradar_key_file.readline()
+    sportradar_key = sportradar_key_file.readline().strip()
     sportradar_key_file.close()
 
     conn.request("GET", "/nba/trial/v7/en/seasons/2019/REG/standings.json?api_key=" + sportradar_key)
