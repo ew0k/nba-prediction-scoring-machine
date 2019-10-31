@@ -2,9 +2,8 @@ import json
 import os
 import http.client
 
-def get_standings():
-    conn = http.client.HTTPSConnection("api.sportradar.us")
 
+def get_sportradar_key():
     try:
         sportradar_key_file = open("sportradar_key.dontpush")
     except:
@@ -12,11 +11,20 @@ def get_standings():
         exit(1)
     
     sportradar_key = sportradar_key_file.readline().strip()
-    sportradar_key_file.close()
+    if len(sportradar_key) == 0:
+        print("No key in sportradar_key.dontpush file")
+        exit(1)
 
+    sportradar_key_file.close()
+    return sportradar_key
+
+
+def get_standings(sportradar_key):
+    conn = http.client.HTTPSConnection("api.sportradar.us")
     conn.request("GET", "/nba/trial/v7/en/seasons/2019/REG/standings.json?api_key=" + sportradar_key)
     res = conn.getresponse()
     data = res.read()
+
     return data
 
 def parse_json(json_string):
@@ -46,7 +54,8 @@ def print_standings(west_conference_standings, east_conference_standings):
         print("%s: %s" % (key, value))
 
 def main():
-    nba_data = get_standings()
+    sportradar_key = get_sportradar_key()
+    nba_data = get_standings(sportradar_key)
     west_conference_standings, east_conference_standings = parse_json(json.loads(nba_data))
     print_standings(west_conference_standings, east_conference_standings)
 
